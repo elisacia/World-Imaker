@@ -17,5 +17,6 @@ public:
       void updatePosX(float direction);
       void updatePosY(float direction);
       void updatePosZ(float direction);
+      void renderCursor(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, FreeFlyCamera &camera);
 
 };

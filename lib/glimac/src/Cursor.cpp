@@ -10,6 +10,11 @@
 using namespace glimac;
 
 
+const float WINDOW_WIDTH = 600;
+const float WINDOW_HEIGHT = 800; 
+
+
+
     Cursor::Cursor(){
 
     m_position = glm::vec3(-10,0,0);
@@ -51,6 +56,30 @@ using namespace glimac;
       //   m_position.z = 0;
       // }
     }
+
+    void Cursor::renderCursor(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, FreeFlyCamera &camera)
+{
+    glm::mat4 camera_VM = camera.getViewMatrix();
+
+    //vertical angle of view, ratio width/height of window, near, far 
+    glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), WINDOW_HEIGHT/WINDOW_WIDTH, 0.1f, 100.f); //<---- height/width change
+    glm::mat4 MVMatrix = glm::translate(glm::mat4(), glm::vec3(0.f, 0.f, -5.f));
+    //formula: (MV⁻1)^T
+    glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
+    
+    glBindVertexArray(m_vao);
+        glUniformMatrix4fv(uMVP_location, 1, GL_FALSE, glm::value_ptr(ProjMatrix*camera_VM));
+        glUniformMatrix4fv(uMV_location, 1, GL_FALSE, glm::value_ptr(camera_VM*MVMatrix));
+        glUniformMatrix4fv(uNormal_location, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
+     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+     glDisable(GL_DEPTH_TEST);
+     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+     glEnable(GL_DEPTH_TEST);
+     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
+    //unbind vao
+    glBindVertexArray(0);
+}
 
 
 

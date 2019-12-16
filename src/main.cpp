@@ -52,10 +52,6 @@ void move_camera_key_pressed(SDL_Event &e, FreeFlyCamera &camera)
         case SDLK_e:
             camera.moveUp(-1);
             break;
-
-        case SDL_SCANCODE_LEFT:
-       camera.moveUp(-1);
-            break;
     }
     
 }
@@ -80,6 +76,19 @@ switch(e.key.keysym.scancode)
         case SDL_SCANCODE_DOWN:
             cursor.updatePosY(-0.5f);
             std::cout<<cursor.getCursorPos()<<std::endl;
+            break;
+
+    }
+
+ switch(e.key.keysym.sym)
+    {
+        case SDLK_n:
+            cursor.updatePosZ(-0.5f);
+            std::cout<<cursor.getCursorPos()<<std::endl;
+            break;
+        case SDLK_b:
+            cursor.updatePosZ(0.5f);
+             std::cout<<cursor.getCursorPos()<<std::endl;
             break;
     }
 
@@ -110,20 +119,26 @@ int main(int argc, char** argv) {
 
     GLint uMVP_location, uMV_location, uNormal_location;
 
-    unsigned int nb_cubes=3;
+    unsigned int nb_cubes=11;
     std::vector <Cube> list_cubes;
 
     Cursor cursor;
     glm::vec3 cursorPos;
 
-    for (int j = -5; j < 5; ++j)
+    for (int j = 0; j < 10; ++j)
     {
-       for (int k = 0; k > -10; --k)
+       for (int k = 0; k < 10; ++k)
        {
            for (unsigned int i=0; i<nb_cubes; i++)
             {
-                list_cubes.push_back( Cube(glm::vec3(j,i,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1)) );
+                list_cubes.push_back( Cube(glm::vec3(j,i,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),true) );
             }
+
+            for (unsigned int i=nb_cubes; i<10; i++)
+            {
+                list_cubes.push_back( Cube(glm::vec3(j,i,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),false) );
+            }
+
 
        }
     }
@@ -180,11 +195,11 @@ int main(int argc, char** argv) {
         cursor.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location, program);
 
 
-         cursor.render(uMVP_location, uMV_location, uNormal_location, camera);
+         cursor.renderCursor(uMVP_location, uMV_location, uNormal_location, camera);
 
          overlay.drawOverlay();
 
-            overlay.endFrame(windowManager.m_window);
+        overlay.endFrame(windowManager.m_window);
 
 
         windowManager.swapBuffers();

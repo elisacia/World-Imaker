@@ -92,6 +92,10 @@ void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_loc
 
 void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, FreeFlyCamera &camera)
 {
+    if (m_visible)
+    {
+       
+
     glm::mat4 camera_VM = camera.getViewMatrix();
 
     //vertical angle of view, ratio width/height of window, near, far 
@@ -108,6 +112,7 @@ void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_locatio
 
     //unbind vao
     glBindVertexArray(0);
+    }
 }
 
 void Cube::liberate_resources()
