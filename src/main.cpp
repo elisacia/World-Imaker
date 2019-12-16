@@ -80,6 +80,7 @@ switch(e.key.keysym.scancode)
 
     }
 
+
  switch(e.key.keysym.sym)
     {
         case SDLK_n:
@@ -89,6 +90,26 @@ switch(e.key.keysym.scancode)
         case SDLK_b:
             cursor.updatePosZ(0.5f);
              std::cout<<cursor.getCursorPos()<<std::endl;
+            break;
+    }
+
+}
+
+void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, int volume)
+{
+    float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
+     switch(e.key.keysym.sym)
+    {
+        case SDLK_w:
+            cursorPos = cursor.getCursorPos();
+            std::cout<<cursorPos<<std::endl;
+            list_cubes[index].removeCube();
+            break;
+
+        case SDLK_x:
+            cursorPos = cursor.getCursorPos();
+            std::cout<<cursorPos<<std::endl;
+            list_cubes[index].addCube();
             break;
     }
 
@@ -119,29 +140,46 @@ int main(int argc, char** argv) {
 
     GLint uMVP_location, uMV_location, uNormal_location;
 
-    unsigned int nb_cubes=11;
+    unsigned int nb_cubes=3;
     std::vector <Cube> list_cubes;
 
     Cursor cursor;
     glm::vec3 cursorPos;
 
-    for (int j = 0; j < 10; ++j)
+    int volume=10;
+    bool visibility=true;
+    for (int k = 0; k < volume; ++k)
     {
-       for (int k = 0; k < 10; ++k)
-       {
-           for (unsigned int i=0; i<nb_cubes; i++)
+        if (k>=nb_cubes) visibility= false;
+        for (int j = 0; j < volume; ++j)
+        {
+            for (int i = 0; i < volume; ++i)
             {
-                list_cubes.push_back( Cube(glm::vec3(j,i,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),true) );
+            list_cubes.push_back( Cube(glm::vec3(i,k,j), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),visibility) );
             }
 
-            for (unsigned int i=nb_cubes; i<10; i++)
-            {
-                list_cubes.push_back( Cube(glm::vec3(j,i,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),false) );
-            }
-
-
-       }
+        }
     }
+
+
+    // for (int j = 0; j < 10; ++j)
+    // {
+    //    for (int k = 0; k < 10; ++k)
+    //    {
+    //        for (unsigned int i=0; i<nb_cubes; i++)
+    //         {
+
+    //             list_cubes.push_back( Cube(glm::vec3(i,j,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),true) );
+    //         }
+
+    //         for (unsigned int i=nb_cubes; i<10; i++)
+    //         {
+    //             list_cubes.push_back( Cube(glm::vec3(i,j,k), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),false) );
+    //         }
+
+
+    //    }
+    // }
     
 
     for(Cube &c: list_cubes)
@@ -175,6 +213,7 @@ int main(int argc, char** argv) {
 
             move_camera_key_pressed(e, camera);
             move_cursor_key_pressed(e, cursor);
+            sculpt_cubes(e,list_cubes,cursor,cursorPos,volume);
 
              }
 
@@ -203,6 +242,8 @@ int main(int argc, char** argv) {
 
 
         windowManager.swapBuffers();
+
+    
     }
 
     for(Cube &c: list_cubes)

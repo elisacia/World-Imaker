@@ -121,6 +121,16 @@ void Cube::liberate_resources()
     glDeleteVertexArrays(1, &m_vao);
 }
 
+void Cube::addCube()
+{
+    m_visible=true;
+}
+
+void Cube::removeCube()
+{
+    m_visible=false;
+}
+
 CubeType Cube::getType()
 {
     return m_type;

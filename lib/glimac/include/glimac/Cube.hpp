@@ -43,6 +43,9 @@ public:
   void render(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, FreeFlyCamera &camera);
   void liberate_resources();
   void create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, glimac::Program &program);
+  void addCube();
+  void removeCube();
+
   CubeType getType();
 };
 
