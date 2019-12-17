@@ -86,5 +86,37 @@ using namespace glimac;
     glBindVertexArray(0);
 }
 
+void Cursor::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, ShaderProgram &shader1)
+{
+    uMVP_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVPMatrix" );
+    uMV_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVMatrix" );
+    uNormal_location = glGetUniformLocation(shader1.m_program.getGLId(), "uNormalMatrix" );
+}
+
+void Cursor::updateVertices()
+{
+
+    //glGenBuffers(1, &m_vbo);
+    //bind buffer vbo to a target
+    glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
+
+
+    Vertex3DColor vertices[] = {
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, m_color), //0
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, m_color), //1
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, m_color), //2
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, m_color), //3
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, m_color), //4
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, m_color), //5
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, m_color), //6
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, m_color) //7
+                          };
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    //unbind target to avoid modifying it by mistake
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+}
+
 
 

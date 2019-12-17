@@ -16,6 +16,8 @@
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <imgui/imgui_impl_sdl.h>
+#include <glimac/common.hpp>
+
 
 using namespace glimac;
 
@@ -105,36 +107,6 @@ void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, 
 {
     float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
     float indexCol= cursorPos.z*volume+cursorPos.x;
-    /*
-    if(e.type==SDL_KEYDOWN){
-     switch(e.key.keysym.sym)
-    {
-        case SDLK_w:
-            std::cout<<cursorPos<<std::endl;
-            list_cubes[index].removeCube();
-            break;
-
-        case SDLK_x:
-            std::cout<<cursorPos<<std::endl;
-            list_cubes[index].addCube();
-            break;
-
-        case SDLK_c:
-            while (list_cubes[indexCol].isVisible()==true){
-                indexCol = indexCol+(volume*volume);
-            }
-            list_cubes[indexCol].addCube();
-            break;
-
-         case SDLK_v:
-            while (list_cubes[indexCol+(volume*volume)].isVisible()==true){
-                indexCol = indexCol+(volume*volume);
-            }
-            list_cubes[indexCol].removeCube();
-            break;
-    }
-    }
-    */
 
     //REMOVE
     if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_w ) || action == 1){
@@ -171,6 +143,43 @@ void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, 
 }
 
 
+void paint_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, int volume, int action)
+{
+    float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
+    float indexCol= cursorPos.z*volume+cursorPos.x;
+
+    //RED
+    if (action == 5){
+        list_cubes[index].setType(1);
+           std::cout<<list_cubes[index].getType()<<std::endl;
+           std::cout<<action<<std::endl;
+      
+    }
+
+    //YELLOW
+    if (action == 6){
+        list_cubes[index].setType(2);
+           std::cout<<list_cubes[index].getType()<<std::endl;
+           std::cout<<action<<std::endl;
+       
+    }
+
+    //PUNK
+    if (action == 7){
+            list_cubes[index].setType(3);
+            std::cout<<list_cubes[index].getType()<<std::endl;
+            std::cout<<action<<std::endl;
+       
+    }
+
+       
+    
+
+}
+
+
+
+
 int main(int argc, char** argv) {    
 
     // Initialize SDL and open a window
@@ -190,11 +199,13 @@ int main(int argc, char** argv) {
 
     //shaders
     FilePath applicationPath(argv[0]);
-    Program program = loadProgram(applicationPath.dirPath() + "../shaders/color.vs.glsl",applicationPath.dirPath() + "../shaders/color.fs.glsl");
-    program.use();
+    ShaderProgram shader1(applicationPath,"colorred.fs.glsl");
+    ShaderProgram shader2(applicationPath,"colorcursor.fs.glsl");
+    //Program program = loadProgram(applicationPath.dirPath() + "../shaders/color.vs.glsl",applicationPath.dirPath() + "../shaders/color.fs.glsl");
+    //program.use();
 
 
-    GLint uMVP_location, uMV_location, uNormal_location;
+    GLint uMVP_location, uMV_location, uNormal_location, uCubeType_location_location;
 
     unsigned int nb_cubes=3;
     std::vector <Cube> list_cubes;
@@ -218,14 +229,20 @@ int main(int argc, char** argv) {
     }
 
     
-
+   
     for(Cube &c: list_cubes)
     {
         c.create_vbo_vao();
-        c.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location, program);
+        c.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location,uCubeType_location_location, shader1);
     }
 
-    
+
+
+
+    cursor.create_vbo_vao();
+    cursor.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location, shader2);
+
+   
 
     //Load camera
     FreeFlyCamera camera;
@@ -251,7 +268,9 @@ int main(int argc, char** argv) {
             move_camera_key_pressed(e, camera);
             move_cursor_key_pressed(e, cursor);
             sculpt_cubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui);
+            paint_cubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui);
             actionGui=0;
+
              } 
             
         /*********************************
@@ -259,18 +278,18 @@ int main(int argc, char** argv) {
          *********************************/
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
-
+        shader1.m_program.use();
 
         for(Cube &c: list_cubes)
         {
+            glUniform1i(shader1.uCubeType_location, c.getType());
             c.render(uMVP_location, uMV_location, uNormal_location, camera);
         }
+        
+        shader2.m_program.use();
 
-        cursor.create_vbo_vao();
-        cursor.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location, program);
-
-
-         cursor.renderCursor(uMVP_location, uMV_location, uNormal_location, camera);
+        cursor.updateVertices();
+        cursor.renderCursor(uMVP_location, uMV_location, uNormal_location, camera);
 
 
         overlay.endFrame(windowManager.m_window);

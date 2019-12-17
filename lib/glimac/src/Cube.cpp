@@ -78,11 +78,12 @@ void Cube::create_vbo_vao()
 
 
 
-void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, Program &program)
+void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, GLint &uCubeType_location, ShaderProgram &shader1)
 {
-    uMVP_location = glGetUniformLocation(program.getGLId(), "uMVPMatrix" );
-    uMV_location = glGetUniformLocation(program.getGLId(), "uMVMatrix" );
-    uNormal_location = glGetUniformLocation(program.getGLId(), "uNormalMatrix" );
+    uMVP_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVPMatrix" );
+    uMV_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVMatrix" );
+    uNormal_location = glGetUniformLocation(shader1.m_program.getGLId(), "uNormalMatrix" );
+    uCubeType_location = glGetUniformLocation(shader1.m_program.getGLId(), "uCubeType" );
 }
 
 
@@ -135,9 +136,15 @@ bool Cube::isVisible()
 
 
 
-CubeType Cube::getType()
+
+int Cube::getType()
 {
     return m_type;
+}
+
+void Cube::setType(int type)
+{
+    m_type=type;
 }
 
 

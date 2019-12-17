@@ -40,6 +40,13 @@ namespace glimac {
     if (ImGui::Button("EXTRUDE COLUMN"))  action=3;
 
     if (ImGui::Button("DIG COLUMN"))  action=4;
+
+    if (ImGui::Button("PAINT PURPLE CUBE"))  action=5;
+
+    if (ImGui::Button("PAINT PINK CUBE"))  action=6;
+
+    if (ImGui::Button("PAINT BLUE CUBE"))  action=7;
+
     ImGui::End();
 
     }

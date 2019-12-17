@@ -5,13 +5,10 @@
 
 #include "Program.hpp"
 #include "FreeFlyCamera.hpp"
+#include "common.hpp"
 #include <glm/glm.hpp>
 
 namespace glimac{
-
-typedef enum{
-  SELECTED, FLAT, TEXTURED
-}CubeType;
 
 
 class Vertex3DColor
@@ -33,7 +30,12 @@ protected:
   GLuint m_vao; //Vertex Array Object
   glm::vec3 m_position;
   glm::vec3 m_color;
-  CubeType m_type;
+  int m_type = 3;
+   //1=Rouge
+   //2=Jaune
+   //3=Rose
+
+
   bool m_selected = false;
   bool m_visible = false;
 
@@ -43,12 +45,13 @@ public:
   void create_vbo_vao();
   void render(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, FreeFlyCamera &camera);
   void liberate_resources();
-  void create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, glimac::Program &program);
+  void create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location,GLint &uCubeType_location, ShaderProgram &shader);
   void addCube();
   void removeCube();
   bool isVisible();
 
-  CubeType getType();
+  int getType();
+  void setType(int type);
 };
 
 }
