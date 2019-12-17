@@ -2,7 +2,7 @@
 #include <iostream>
 
 FreeFlyCamera::FreeFlyCamera(){
-    m_Position = glm::vec3(5.0f,4.0f,20.0f);
+    m_Position = glm::vec3(VOLUME/2,4.0f,2*VOLUME);
     m_fPhi = M_PI;
     m_fTheta = 0.0;
     computeDirectionVectors();

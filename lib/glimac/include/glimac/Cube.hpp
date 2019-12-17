@@ -5,6 +5,7 @@
 
 #include "Program.hpp"
 #include "FreeFlyCamera.hpp"
+#include <glm/glm.hpp>
 
 namespace glimac{
 
@@ -45,6 +46,7 @@ public:
   void create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, glimac::Program &program);
   void addCube();
   void removeCube();
+  bool isVisible();
 
   CubeType getType();
 };

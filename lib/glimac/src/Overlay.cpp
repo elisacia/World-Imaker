@@ -26,11 +26,20 @@ namespace glimac {
         ImGui::NewFrame();
     }
 
-    void Overlay::drawOverlay() const {
+    void Overlay::drawOverlay(int &action) const {
 
         // render your GUI
+    ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH-250, 10));
+    ImGui::SetNextWindowSize(ImVec2(240, WINDOW_HEIGHT-20));
     ImGui::Begin("Demo window");
-    ImGui::Button("Hello!");
+   
+    if (ImGui::Button("REMOVE CUBE"))  action=1;
+
+    if (ImGui::Button("ADD CUBE"))  action=2;
+
+    if (ImGui::Button("EXTRUDE COLUMN"))  action=3;
+
+    if (ImGui::Button("DIG COLUMN"))  action=4;
     ImGui::End();
 
     }

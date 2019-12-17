@@ -4,9 +4,6 @@
 
 using namespace glimac;
 
-const float WINDOW_WIDTH = 600;
-const float WINDOW_HEIGHT = 800; 
-
 void Cube::create_vbo_vao()
 {
     glGenBuffers(1, &m_vbo);
@@ -99,7 +96,7 @@ void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_locatio
     glm::mat4 camera_VM = camera.getViewMatrix();
 
     //vertical angle of view, ratio width/height of window, near, far 
-    glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), WINDOW_HEIGHT/WINDOW_WIDTH, 0.1f, 100.f); //<---- height/width change
+    glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.f); 
     glm::mat4 MVMatrix = glm::translate(glm::mat4(), glm::vec3(0.f, 0.f, -5.f));
     //formula: (MV⁻1)^T
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
@@ -130,6 +127,13 @@ void Cube::removeCube()
 {
     m_visible=false;
 }
+
+bool Cube::isVisible()
+{
+    return m_visible;
+}
+
+
 
 CubeType Cube::getType()
 {
