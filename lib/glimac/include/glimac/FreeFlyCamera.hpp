@@ -1,6 +1,5 @@
 #pragma once
-#include "glimac/glm.hpp"
-#include <glm/glm.hpp>
+#include <glimac/common.hpp>
 
 class FreeFlyCamera{
 

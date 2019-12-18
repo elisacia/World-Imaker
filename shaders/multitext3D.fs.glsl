@@ -1,17 +1,14 @@
-#version 330 core
+#version 330
 
-in vec3 vPosition_vs; 
-in vec3 vNormal_vs;
-in vec2 vTexCoords; 
+in vec2 vVertexTextCoords;
 
 uniform sampler2D uTexture1;
 uniform sampler2D uTexture2;
 
-
 out vec3 fFragColor;
 
 void main() {
-	vec4 color1 = texture(uTexture1, vTexCoords);
-	vec4 color2 = texture(uTexture2, vTexCoords);
-    fFragColor = color1.rgb+color2.rgb;
+  vec3 texture_color1 = texture(uTexture1, vVertexTextCoords).xyz;
+  vec3 texture_color2 = texture(uTexture2, vVertexTextCoords).xyz;
+  fFragColor = texture_color1 + texture_color2;
 }

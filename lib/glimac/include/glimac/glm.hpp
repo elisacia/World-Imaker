@@ -7,7 +7,3 @@
 #include <glm/gtc/constants.hpp>
 #include <glm/gtx/io.hpp>
 #include <glm/gtc/random.hpp>
-
-const int VOLUME = 10; 
-const float WINDOW_WIDTH = 1000;
-const float WINDOW_HEIGHT = 600; 

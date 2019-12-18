@@ -11,7 +11,6 @@ namespace glimac {
     void Overlay::initImgui(SDL_Window* window,SDL_GLContext* glContext) const {
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
-        ImGuiIO &io = ImGui::GetIO();
         // Setup Platform/Renderer bindings
         ImGui_ImplSDL2_InitForOpenGL(window, glContext);
         ImGui_ImplOpenGL3_Init("#version 330 core");
@@ -41,11 +40,17 @@ namespace glimac {
 
     if (ImGui::Button("DIG COLUMN"))  action=4;
 
-    if (ImGui::Button("PAINT PURPLE CUBE"))  action=5;
+    if (ImGui::Button("PAINT RED CUBE"))  action=5;
 
-    if (ImGui::Button("PAINT PINK CUBE"))  action=6;
+    if (ImGui::Button("PAINT WHITE CUBE"))  action=6;
 
-    if (ImGui::Button("PAINT BLUE CUBE"))  action=7;
+    if (ImGui::Button("PAINT YELLOW CUBE"))  action=7;
+
+    if (ImGui::Button("CLEAN ALL"))  action=8;
+
+    if (ImGui::Button("SCENE GENERATOR"))  action=9;
+
+    
 
     ImGui::End();
 

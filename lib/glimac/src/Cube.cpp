@@ -1,16 +1,13 @@
-
-#include <iostream>
 #include <glimac/Cube.hpp>
 
-using namespace glimac;
+namespace glimac {
 
 void Cube::create_vbo_vao()
 {
     glGenBuffers(1, &m_vbo);
-    //bind buffer vbo to a target
+    // Bind buffer vbo to a target
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-
-    //origin + position
+    // Origin + position
     Vertex3DColor vertices[] = {
                     Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, m_color), //0
                     Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, m_color), //1
@@ -23,16 +20,15 @@ void Cube::create_vbo_vao()
                           };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-    //unbind target to avoid modifying it by mistake
+    // Unbind target to avoid modifying it by mistake
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-    //=======CREATE IBO (index buffer object)===========
+    // Create IBO
     GLuint ibo;
     glGenBuffers(1, &ibo);
-    //different target, reserved to IBOs
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
-    //8 vertices, 6 faces
+    // Create indexes : 8 vertices, 6 faces
     uint32_t indexes[36] = {0, 1, 3, //top face 
                             1, 3, 2,
                             4, 5, 7, //bottom face
@@ -43,42 +39,41 @@ void Cube::create_vbo_vao()
                             2, 5, 6,
                             3, 2, 7, //front face
                             2, 7, 6,
-                            0, 1, 4, //back 
+                            0, 1, 4, //back  face
                             1, 4, 5};
 
-    //fill IBO with indexes
+    // Fill IBO with indexes
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36*sizeof(uint32_t), indexes, GL_STATIC_DRAW);
-    //debind before doing the rest
+    // Debind before doing the rest
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
-    //data now stocked in GPU, we can do vertex specification ie create Vertex Array Object - VAO
-    //vao tells us for each attribute of a vertex the way it is organised
+    // Create VAO
     glGenVertexArrays(1, &m_vao);
-    //bind vao (no target)
     glBindVertexArray(m_vao);
-    //bind ibo on target to save ibo in vao
+    
+    // Bind IBO on target to save IBO in VAO
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-    //tell OpenGL what attribute we're wanting to use (position-0)
+    
     const GLuint VERTEX_ATTR_POSITION = 0;
     const GLuint VERTEX_ATTR_COLOR = 1;
 
-    //vbo contains data, vao describes it
-    //bind vbo again
+    // Bind VBO again
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
-    //tell OpenGL where to find vertices and how to read data associated to each vertex
+
+    // Where to find vertices and how to read data
     glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_position));
     glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
     glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_color));
     glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
     
-    //unbind vbo and vao
+    // Unbind VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
 }
 
 
 
-void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, GLint &uCubeType_location, ShaderProgram &shader1)
+void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, GLint &uCubeType_location,const ShaderProgram &shader1)
 {
     uMVP_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVPMatrix" );
     uMV_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVMatrix" );
@@ -88,18 +83,13 @@ void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_loc
 
 
 
-void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, FreeFlyCamera &camera)
+void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, const FreeFlyCamera &camera) const
 {
     if (m_visible)
-    {
-       
-
+    {       
     glm::mat4 camera_VM = camera.getViewMatrix();
-
-    //vertical angle of view, ratio width/height of window, near, far 
     glm::mat4 ProjMatrix = glm::perspective(glm::radians(70.f), WINDOW_WIDTH/WINDOW_HEIGHT, 0.1f, 100.f); 
     glm::mat4 MVMatrix = glm::translate(glm::mat4(), glm::vec3(0.f, 0.f, -5.f));
-    //formula: (MV⁻1)^T
     glm::mat4 NormalMatrix = glm::transpose(glm::inverse(MVMatrix));
     
     glBindVertexArray(m_vao);
@@ -108,7 +98,7 @@ void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_locatio
         glUniformMatrix4fv(uNormal_location, 1, GL_FALSE, glm::value_ptr(NormalMatrix));
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
 
-    //unbind vao
+    // Unbind VAO
     glBindVertexArray(0);
     }
 }
@@ -129,15 +119,12 @@ void Cube::removeCube()
     m_visible=false;
 }
 
-bool Cube::isVisible()
+bool Cube::isVisible() const
 {
     return m_visible;
 }
 
-
-
-
-int Cube::getType()
+int Cube::getType() const
 {
     return m_type;
 }
@@ -147,4 +134,29 @@ void Cube::setType(int type)
     m_type=type;
 }
 
+glm::vec3 Cube::getPosition() const
+{
+    return m_position;
+}
+
+void setGround(std::vector <Cube> &list_cubes, const int volume)
+{
+    bool visibility=true;
+    unsigned int nb_cubes=3;
+        for (int k = 0; k < VOLUME; ++k)
+        {
+            if (k>=nb_cubes) visibility= false;
+            
+            for (int j = 0; j < VOLUME; ++j)
+            {
+                for (int i = 0; i < VOLUME; ++i)
+                {
+                    list_cubes.push_back( Cube(glm::vec3(i,k,j), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),visibility) );
+                }
+
+            }
+        }
+    }
+
+}
 

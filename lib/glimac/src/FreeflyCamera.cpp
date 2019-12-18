@@ -1,4 +1,4 @@
-#include "glimac/FreeflyCamera.hpp"
+#include <glimac/FreeFlyCamera.hpp>
 #include <iostream>
 
 FreeFlyCamera::FreeFlyCamera(){
@@ -43,7 +43,6 @@ void FreeFlyCamera::rotateUp(float degrees){
 
 glm::mat4 FreeFlyCamera::getViewMatrix() const{
     //Point
-    glm::vec3 Point = m_Position + m_FrontVector;
     glm::mat4 MV = glm::lookAt(m_Position, m_Position + m_FrontVector, m_UpVector);
     return MV;
 }
