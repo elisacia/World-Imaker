@@ -141,6 +141,8 @@ glm::vec3 Cube::getPosition() const
 
 void setGround(std::vector <Cube> &list_cubes, const int volume)
 {
+    if (list_cubes.empty()==false) list_cubes.clear();
+    
     bool visibility=true;
     unsigned int nb_cubes=3;
         for (int k = 0; k < VOLUME; ++k)

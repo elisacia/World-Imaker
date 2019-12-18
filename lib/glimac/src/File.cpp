@@ -10,7 +10,7 @@ namespace glimac{
 // ================================
 // RECONSTRUCTION TABLEAU APRES LECTURE FICHIER
 // ================================
-	void readFile(const FilePath &applicationPath,std::string filename,std::vector <glm::vec3> &list_ctrl){
+	void readFile(const FilePath &applicationPath,std::string filename,std::vector <ControlPoint> &list_ctrl){
 	
 		std::ifstream fichier(applicationPath.dirPath() + "../assets/doc"+filename, std::ios::in); 
 
@@ -23,21 +23,17 @@ namespace glimac{
     		{
         		//if (line.size()>0)
    			//{
-        			glm::vec3 vec;
-        			fichier >> vec.x;
-        			fichier >> vec.y;
-        			fichier >> vec.z;
-        			std::cout<<vec<<std::endl;
-        			std::cout<<"___________________________"<<std::endl;
-        			list_ctrl.push_back(vec);
+        			ControlPoint control;
+        			fichier >> control.m_position.x;
+        			fichier >> control.m_position.y;
+        			fichier >> control.m_position.z;
+        			fichier >> control.m_value;
+        			
+        			list_ctrl.push_back(control);
 
         		
     		//}
     	}
-    	for(glm::vec3 &c: list_ctrl)
-				    {
-				           std::cout<<c<<std::endl;
-				    }	
 
 			fichier.close();  
 		}

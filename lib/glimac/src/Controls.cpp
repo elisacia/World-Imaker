@@ -83,27 +83,40 @@ switch(e.key.keysym.scancode)
 
 }
 
-void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action)
+void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon)
 {
     float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
     float indexCol= cursorPos.z*volume+cursorPos.x;
 
     //REMOVE
-    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_w ) || action == 1){
-        std::cout<<cursorPos<<std::endl;
+    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_w ) || action == 5){
         list_cubes[index].removeCube();
       
     }
 
+    if (action == 50){
+       float value;
+        for(Cube &c: list_cubes){
+            value = getRBF(FunctionType::Gaussian, c.getPosition(), cursorPos, epsilon);
+            if (value >= 0.5f )  c.removeCube();
+        } 
+    }
+
     //ADD
-    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_x ) || action == 2){
-        std::cout<<cursorPos<<std::endl;
+    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_x ) || action == 6){
         list_cubes[index].addCube();
-       
+    }
+
+    if (action == 60){
+       float value;
+        for(Cube &c: list_cubes){
+            value = getRBF(FunctionType::Gaussian, c.getPosition(), cursorPos, epsilon);
+            if (value >= 0.5f )  c.addCube();
+        } 
     }
 
     //EXTRUDE
-    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_c ) || action == 3){
+    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_c ) || action == 7){
         while (list_cubes[indexCol].isVisible()==true){
                 indexCol = indexCol+(volume*volume);
             }
@@ -112,7 +125,7 @@ void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, 
     }
 
     //DIG
-    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_v ) || action == 4){
+    if ((e.type==SDL_KEYDOWN && e.key.keysym.sym==SDLK_v ) || action == 8){
         while (list_cubes[indexCol+(volume*volume)].isVisible()==true){
                 indexCol = indexCol+(volume*volume);
             }
@@ -122,33 +135,20 @@ void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, 
 }
 
 
-void paint_cubes(std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action)
+void paint_cubes(std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon)
 {
     float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
 
-    //RED
-    if (action == 5){
-        list_cubes[index].setType(1);
-           std::cout<<list_cubes[index].getType()<<std::endl;
-           std::cout<<action<<std::endl;
-      
-    }
+    if (action%10 == 0){
 
-    //YELLOW
-    if (action == 6){
-        list_cubes[index].setType(2);
-           std::cout<<list_cubes[index].getType()<<std::endl;
-           std::cout<<action<<std::endl;
-       
-    }
-
-    //PUNK
-    if (action == 7){
-            list_cubes[index].setType(3);
-            std::cout<<list_cubes[index].getType()<<std::endl;
-            std::cout<<action<<std::endl;
-       
-    }
+        // float epsilon=0.1f;
+        float value;
+        for(Cube &c: list_cubes){
+            value = getRBF(FunctionType::Gaussian, c.getPosition(), cursorPos, epsilon);
+            if (value >= 0.5f )  c.setType(action/10);
+        } 
+    }  
+    else list_cubes[index].setType(action);
 }
 
 void cleanScene(std::vector <Cube> &list_cubes, const int volume)
@@ -158,6 +158,12 @@ void cleanScene(std::vector <Cube> &list_cubes, const int volume)
         }
 }
 
+void resetFloor(std::vector <Cube> &list_cubes, const int volume)
+{
+        for(Cube &c: list_cubes){
+            c.removeCube();
+        }
+}
 
 
 

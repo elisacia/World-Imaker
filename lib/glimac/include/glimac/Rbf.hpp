@@ -23,9 +23,17 @@ enum class FunctionType
         Multiquadric,     // f(r) = sqrt(1 + (epsiolon * r^2))
     };
 
+ class ControlPoint
+{
+public:
+    glm::vec3 m_position;
+    float m_value;
+};
+
+
     float getRBF(FunctionType type, const glm::vec3 vecA, const glm::vec3 vecB, const float epsilon);
 
-    void applyRbf(std::vector <Cube> &list_cubes,  std::vector <glm::vec3> &list_controls, FunctionType type);
+    void applyRbf(std::vector <Cube> &list_cubes,  std::vector <ControlPoint> &list_controls, FunctionType type);
 
 }
 

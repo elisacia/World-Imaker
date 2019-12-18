@@ -10,6 +10,7 @@
 #include <imgui/imgui_impl_sdl.h>
 #include <glimac/common.hpp>
 
+
 namespace glimac
 {
 	class Overlay
@@ -21,9 +22,10 @@ namespace glimac
 			~Overlay();
 			void initImgui(SDL_Window* window,SDL_GLContext* glContext) const;
 			void beginFrame(SDL_Window* window) const;
-			void drawOverlay(int &action) const;
+			float drawOverlay(int &action) const ;
     		void endFrame(SDL_Window* window) const;
     		void clean(SDL_Window* window) const;
+    		
 	};
 }
 

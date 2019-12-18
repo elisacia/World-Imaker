@@ -13,6 +13,7 @@
 #include <glimac/Cursor.hpp>
 #include <glimac/File.hpp>
 #include <glm/glm.hpp>
+#include <glimac/Rbf.hpp>
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_opengl3.h>
 #include <imgui/imgui_impl_sdl.h>
@@ -52,13 +53,10 @@ int main(int argc, char** argv) {
     Cursor cursor;
     glm::vec3 cursorPos;
 
-    std::vector <glm::vec3> list_ctrl;
+    std::vector <ControlPoint> list_ctrl;
     readFile(applicationPath,"Control.txt",list_ctrl);
 
-    for(glm::vec3 &c: list_ctrl)
-    {
-           std::cout<<c<<std::endl;
-    }
+
 
     // list_ctrl.push_back(glm::vec3(0.0, 0.0, 9.0));
     // list_ctrl.push_back(glm::vec3(9.0, 9.0, 0.0));
@@ -81,6 +79,7 @@ int main(int argc, char** argv) {
     // Load camera
     FreeFlyCamera camera;
 
+    float brushCursor;
 
     // Application loop
     bool done = false;
@@ -90,7 +89,7 @@ int main(int argc, char** argv) {
 
         // Draw Imgui Windows
         overlay.beginFrame(windowManager.m_window);     
-        overlay.drawOverlay(actionGui);
+        brushCursor = overlay.drawOverlay(actionGui);
        
        // Event controller
         while(windowManager.pollEvent(e)) {
@@ -101,11 +100,12 @@ int main(int argc, char** argv) {
 
             move_camera_key_pressed(e, camera); // Camera events
             move_cursor_key_pressed(e, cursor); // Cursor events
-            sculpt_cubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui); // Scuplting events
+            sculpt_cubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Scuplting events
             
-            if (actionGui==5 || actionGui==6 || actionGui==7) paint_cubes(list_cubes,cursor,cursorPos,VOLUME,actionGui); // Painting events
+            if (actionGui==1 || actionGui==10|| actionGui==2 || actionGui==20 || actionGui==3 || actionGui==30) 
+            paint_cubes(list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Painting events
             
-            if (actionGui==8)cleanScene(list_cubes, VOLUME);
+            if (actionGui==4)cleanScene(list_cubes, VOLUME);
 
             if (actionGui==9)applyRbf(list_cubes, list_ctrl, FunctionType::Gaussian);
 

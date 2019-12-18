@@ -4,6 +4,8 @@
 
 namespace glimac {
 
+
+
   //template <typename T>
     float getRBF(FunctionType type, const glm::vec3 v1, const glm::vec3 v2, const float epsilon){
         float d = glm::distance(v1, v2);
@@ -26,15 +28,15 @@ namespace glimac {
     }
 
   
-  void applyRbf(std::vector <Cube> &list_cubes, std::vector <glm::vec3> &list_controls, FunctionType type){
-    float epsilon=10.0f;
+  void applyRbf(std::vector <Cube> &list_cubes, std::vector <ControlPoint> &list_controls, FunctionType type){
+    float epsilon=0.010f;
     float value;
     for(Cube &c: list_cubes){
       value=0;
-      for (glm::vec3 &control: list_controls){
-        value+=getRBF(type, c.getPosition(), control, epsilon);
+      for (ControlPoint &control: list_controls){
+        value+= getRBF(type, c.getPosition(), control.m_position, epsilon)*control.m_value;
       }
-      if (value > 0.0f )  c.addCube();
+      if (value >= 0.5f )  c.addCube();
       else c.removeCube();
     }  
   }

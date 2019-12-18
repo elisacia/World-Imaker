@@ -1,4 +1,8 @@
 #include "glimac/Overlay.hpp"
+
+
+
+
 #include <iostream>
 
 namespace glimac {
@@ -25,36 +29,68 @@ namespace glimac {
         ImGui::NewFrame();
     }
 
-    void Overlay::drawOverlay(int &action) const {
+
+
+
+
+
+    float Overlay::drawOverlay(int &action) const {
 
         // render your GUI
     ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH-250, 10));
     ImGui::SetNextWindowSize(ImVec2(240, WINDOW_HEIGHT-20));
-    ImGui::Begin("Demo window");
+    ImGui::Begin("ACTIONS");
    
-    if (ImGui::Button("REMOVE CUBE"))  action=1;
 
-    if (ImGui::Button("ADD CUBE"))  action=2;
+    static bool check = false;
+    static float brushSize=1.0f;
 
-    if (ImGui::Button("EXTRUDE COLUMN"))  action=3;
 
-    if (ImGui::Button("DIG COLUMN"))  action=4;
+    if (ImGui::Button("REMOVE CUBE")){
+        if (check==true) action=50; 
+        else action=5;
+    }
 
-    if (ImGui::Button("PAINT RED CUBE"))  action=5;
+    if (ImGui::Button("ADD CUBE")){
+        if (check==true) action=60; 
+        else action=6;
+    }
 
-    if (ImGui::Button("PAINT WHITE CUBE"))  action=6;
+    if (ImGui::Button("EXTRUDE COLUMN"))  action=7;
 
-    if (ImGui::Button("PAINT YELLOW CUBE"))  action=7;
+    if (ImGui::Button("DIG COLUMN"))  action=8;
 
-    if (ImGui::Button("CLEAN ALL"))  action=8;
+    if (ImGui::Button("PAINT RED CUBE")){
+        if (check==true) action=10; 
+        else action=1;
+    }  
+
+    if (ImGui::Button("PAINT WHITE CUBE")){
+        if (check==true) action=20; 
+        else action=2;
+    }  
+
+    if (ImGui::Button("PAINT YELLOW CUBE")){
+        if (check==true) action=30; 
+        else action=3;
+    }  
+
+    if (ImGui::Button("CLEAN ALL"))  action=4;
 
     if (ImGui::Button("SCENE GENERATOR"))  action=9;
 
-    
+    ImGui::Checkbox("Large selection", &check);
+
+    ImGui::SliderFloat("Brush size", &brushSize, 1.0f, 10.0f);
 
     ImGui::End();
 
+    return 1.0f/brushSize;
+
     }
+
+
+
 
 
     void Overlay::endFrame(SDL_Window* window) const {

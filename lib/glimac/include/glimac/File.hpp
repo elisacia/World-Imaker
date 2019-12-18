@@ -10,10 +10,13 @@
 #include <glimac/glm.hpp>
 #include <glimac/FilePath.hpp> 
 #include <glm/glm.hpp> 
+#include <glimac/Rbf.hpp>
+
+
 
 
 namespace glimac {
-	void readFile(const FilePath &applicationPath,std::string filename,std::vector <glm::vec3> &list_ctrl);
+	void readFile(const FilePath &applicationPath,std::string filename,std::vector <ControlPoint> &list_ctrl);
 }
 
 #endif
