@@ -46,38 +46,38 @@ namespace glimac {
     static float brushSize=1.0f;
 
 
-    if (ImGui::Button("REMOVE CUBE")){
+    if (ImGui::Button("REMOVE CUBE       ")){
         if (check==true) action=50; 
         else action=5;
     }
 
-    if (ImGui::Button("ADD CUBE")){
+    if (ImGui::Button("ADD CUBE          ")){
         if (check==true) action=60; 
         else action=6;
     }
 
-    if (ImGui::Button("EXTRUDE COLUMN"))  action=7;
+    if (ImGui::Button("EXTRUDE COLUMN    "))  action=7;
 
-    if (ImGui::Button("DIG COLUMN"))  action=8;
+    if (ImGui::Button("DIG COLUMN        "))  action=8;
 
-    if (ImGui::Button("PAINT RED CUBE")){
+    if (ImGui::Button("PAINT RED CUBE    ")){
         if (check==true) action=10; 
         else action=1;
     }  
 
-    if (ImGui::Button("PAINT WHITE CUBE")){
+    if (ImGui::Button("PAINT BLUE CUBE   ")){
         if (check==true) action=20; 
         else action=2;
     }  
 
-    if (ImGui::Button("PAINT YELLOW CUBE")){
+    if (ImGui::Button("PAINT YELLOW CUBE ")){
         if (check==true) action=30; 
         else action=3;
     }  
 
-    if (ImGui::Button("CLEAN ALL"))  action=4;
-
-    if (ImGui::Button("SCENE GENERATOR"))  action=9;
+    if (ImGui::Button("SCENE GENERATOR   "))  action=9;
+    if (ImGui::Button("RESET FLOOR       "))  action=11;
+    if (ImGui::Button("CLEAN ALL         "))  action=4;
 
     ImGui::Checkbox("Large selection", &check);
 
@@ -88,10 +88,6 @@ namespace glimac {
     return 1.0f/brushSize;
 
     }
-
-
-
-
 
     void Overlay::endFrame(SDL_Window* window) const {
         ImGui::Render();

@@ -10,9 +10,11 @@
 #include <math.h>
 #include <algorithm>
 #include <numeric>
+#include <Eigen/Dense>
 
 
-namespace glimac {
+
+namespace glimac{
 
 enum class FunctionType
     {
@@ -32,7 +34,7 @@ public:
 
 
     float getRBF(FunctionType type, const glm::vec3 vecA, const glm::vec3 vecB, const float epsilon);
-
+    Eigen::VectorXf mathRbf(std::vector <ControlPoint> &list_controls, FunctionType type,  const float epsilon);
     void applyRbf(std::vector <Cube> &list_cubes,  std::vector <ControlPoint> &list_controls, FunctionType type);
 
 }

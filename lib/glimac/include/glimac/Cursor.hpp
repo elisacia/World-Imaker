@@ -8,13 +8,13 @@
 #include <glimac/Cube.hpp>
 #include <glimac/common.hpp>
 
-namespace glimac {
+namespace glimac{
 
 class Cursor:public Cube {
 
 public:
-    Cursor();
-      glm::vec3 getCursorPos();
+      inline Cursor() {m_position = glm::vec3(0,5,VOLUME-1);};
+      inline glm::vec3 getCursorPos() const {return m_position;} ;
       void updatePosX(float direction);
       void updatePosY(float direction);
       void updatePosZ(float direction);

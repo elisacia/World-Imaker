@@ -5,14 +5,6 @@
 
 namespace glimac {
 
-Cursor::Cursor(){
-  m_position = glm::vec3(0,5,VOLUME-1);
-}
-
-glm::vec3 Cursor::getCursorPos(){
-  return m_position;
-}
-
 void Cursor::updatePosX(float direction){
   m_position.x += direction;
 

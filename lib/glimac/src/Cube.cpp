@@ -29,8 +29,8 @@ void Cube::create_vbo_vao()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
     // Create indexes : 8 vertices, 6 faces
-    uint32_t indexes[36] = {0, 1, 3, //top face 
-                            1, 3, 2,
+    uint32_t indexes[36] = {1, 2, 3, //top face 
+                            1, 3, 0,
                             4, 5, 7, //bottom face
                             5, 7, 6,
                             0, 3, 4, //left face
@@ -109,56 +109,38 @@ void Cube::liberate_resources()
     glDeleteVertexArrays(1, &m_vao);
 }
 
-void Cube::addCube()
-{
-    m_visible=true;
-}
 
-void Cube::removeCube()
-{
-    m_visible=false;
-}
-
-bool Cube::isVisible() const
-{
-    return m_visible;
-}
-
-int Cube::getType() const
-{
-    return m_type;
-}
-
-void Cube::setType(int type)
-{
-    m_type=type;
-}
-
-glm::vec3 Cube::getPosition() const
-{
-    return m_position;
-}
 
 void setGround(std::vector <Cube> &list_cubes, const int volume)
 {
     if (list_cubes.empty()==false) list_cubes.clear();
-    
+
     bool visibility=true;
     unsigned int nb_cubes=3;
-        for (int k = 0; k < VOLUME; ++k)
+    for (int k = 0; k < VOLUME; ++k)
+    {
+        if (k>=nb_cubes) visibility= false;
+        
+        for (int j = 0; j < VOLUME; ++j)
         {
-            if (k>=nb_cubes) visibility= false;
-            
-            for (int j = 0; j < VOLUME; ++j)
+            for (int i = 0; i < VOLUME; ++i)
             {
-                for (int i = 0; i < VOLUME; ++i)
-                {
-                    list_cubes.push_back( Cube(glm::vec3(i,k,j), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),visibility) );
-                }
-
+                list_cubes.push_back( Cube(glm::vec3(i,k,j), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),visibility) );
             }
+
         }
     }
+}
+void resetGround(std::vector <Cube> &list_cubes, const int volume)
+{
+    if (list_cubes.empty()==true) setGround(list_cubes, volume);
+
+    unsigned int index_max=3*volume*volume;
+    for (int i = 0; i < index_max; ++i)
+                list_cubes[i].addCube();
+}
+
+
 
 }
 

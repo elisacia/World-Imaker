@@ -16,31 +16,6 @@ void FreeFlyCamera::computeDirectionVectors(){
     m_UpVector = glm::cross(m_FrontVector, m_LeftVector);
 }
 
-void FreeFlyCamera::moveLeft(float t){
-    m_Position += t * m_LeftVector;
-    computeDirectionVectors();
-}
-
-void FreeFlyCamera::moveFront(float t){
-    m_Position += t * m_FrontVector;
-    computeDirectionVectors();
-}
-
-void FreeFlyCamera::moveUp(float t){
-    m_Position += t * m_UpVector;
-    computeDirectionVectors();
-}
-
-void FreeFlyCamera::rotateLeft(float degrees){
-    m_fPhi += glm::radians(degrees);
-    computeDirectionVectors();
-}
-
-void FreeFlyCamera::rotateUp(float degrees){
-    m_fTheta += glm::radians(degrees);
-    computeDirectionVectors();
-}
-
 glm::mat4 FreeFlyCamera::getViewMatrix() const{
     //Point
     glm::mat4 MV = glm::lookAt(m_Position, m_Position + m_FrontVector, m_UpVector);

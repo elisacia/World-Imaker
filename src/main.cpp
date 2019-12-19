@@ -44,10 +44,10 @@ int main(int argc, char** argv) {
     ShaderProgram shader1(applicationPath,"colorcube.fs.glsl");
     ShaderProgram shader2(applicationPath,"colorcursor.fs.glsl");
 
-    //Program program = loadProgram(applicationPath.dirPath() + "../shaders/color.vs.glsl",applicationPath.dirPath() + "../shaders/color.fs.glsl");
-    //program.use();
-
-    GLint uMVP_location, uMV_location, uNormal_location, uCubeType_location_location;
+    // Uniform Locations
+    GLint uMVP_location, uMV_location, uNormal_location,uCubeType_location;
+    GLint uLightDir_location;
+    uLightDir_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightDir" );
 
     // Initialize the cursor 
     Cursor cursor;
@@ -56,10 +56,6 @@ int main(int argc, char** argv) {
     std::vector <ControlPoint> list_ctrl;
     readFile(applicationPath,"Control.txt",list_ctrl);
 
-
-
-    // list_ctrl.push_back(glm::vec3(0.0, 0.0, 9.0));
-    // list_ctrl.push_back(glm::vec3(9.0, 9.0, 0.0));
     // Initialize a nb_cubes ground height
     
     std::vector <Cube> list_cubes;
@@ -69,7 +65,8 @@ int main(int argc, char** argv) {
     for(Cube &c: list_cubes)
     {
         c.create_vbo_vao();
-        c.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location,uCubeType_location_location, shader1);
+        c.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location,uCubeType_location, shader1);
+
     }
 
     // Create Cursor Buffers + uniform location  
@@ -84,8 +81,11 @@ int main(int argc, char** argv) {
     // Application loop
     bool done = false;
     while(!done) {
-        // glm::mat4 ViewMatrix = camera.getViewMatrix();
+        glm::mat4 ViewMatrix = camera.getViewMatrix();
         SDL_Event e;
+
+        //Background color
+        //glClearColor(1.0,1.0,1.0,1.0);
 
         // Draw Imgui Windows
         overlay.beginFrame(windowManager.m_window);     
@@ -109,6 +109,8 @@ int main(int argc, char** argv) {
 
             if (actionGui==9)applyRbf(list_cubes, list_ctrl, FunctionType::Gaussian);
 
+            if (actionGui==11)resetGround(list_cubes, VOLUME);
+
             actionGui=0;
 
              } 
@@ -121,24 +123,28 @@ int main(int argc, char** argv) {
         
         // Draw Cubes
         shader1.m_program.use();
+
         for(Cube &c: list_cubes)
         {
-            glUniform1i(shader1.uCubeType_location, c.getType());
+            glUniform1i(shader1.uCubeType_location, c.getType());      
             c.render(uMVP_location, uMV_location, uNormal_location, camera);
         }
 
+
+        glm::vec3 tmpLightDir(glm::mat3(camera.getViewMatrix())*glm::vec3(1.0f,1.0f,1.0f));
+        glUniform3fv(shader1.uLightDir_location, 1, glm::value_ptr(tmpLightDir));
+    
+        
         // Draw Cursor
         shader2.m_program.use();
         cursor.updateVertices();
         cursor.renderCursor(uMVP_location, uMV_location, uNormal_location, camera);
 
-
         overlay.endFrame(windowManager.m_window);
         windowManager.swapBuffers();
 
-    
     }
-
+    // Liberate allocations
     for(Cube &c: list_cubes)
     {
         c.liberate_resources();

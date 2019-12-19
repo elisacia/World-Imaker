@@ -19,16 +19,16 @@ const void move_camera_key_pressed(const SDL_Event &e, FreeFlyCamera &camera)
             camera.moveLeft(-1);
             break;
         case SDLK_i:
-            camera.rotateUp(1);
+            camera.rotateUp(2);
             break;
         case SDLK_k:
-            camera.rotateUp(-1);
+            camera.rotateUp(-2);
             break;
         case SDLK_j:
-            camera.rotateLeft(1);
+            camera.rotateLeft(2);
             break;
         case SDLK_l:
-            camera.rotateLeft(-1);
+            camera.rotateLeft(-2);
             break;
         case SDLK_a:
             camera.moveUp(1);
@@ -49,19 +49,15 @@ switch(e.key.keysym.scancode)
     {
         case SDL_SCANCODE_LEFT:
             cursor.updatePosX(-1.0f);
-            std::cout<<cursor.getCursorPos()<<std::endl;
             break;
         case SDL_SCANCODE_RIGHT:
             cursor.updatePosX(1.0f);
-            std::cout<<cursor.getCursorPos()<<std::endl;
             break;
         case SDL_SCANCODE_UP:
             cursor.updatePosY(1.0f);
-            std::cout<<cursor.getCursorPos()<<std::endl;
             break;
         case SDL_SCANCODE_DOWN:
             cursor.updatePosY(-1.0f);
-            std::cout<<cursor.getCursorPos()<<std::endl;
             break;
 
     }
@@ -71,11 +67,10 @@ switch(e.key.keysym.scancode)
     {
         case SDLK_n:
             cursor.updatePosZ(-1.0f);
-            std::cout<<cursor.getCursorPos()<<std::endl;
             break;
         case SDLK_b:
             cursor.updatePosZ(1.0f);
-             std::cout<<cursor.getCursorPos()<<std::endl;
+
             break;
     }
 
