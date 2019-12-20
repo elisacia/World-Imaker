@@ -9,14 +9,37 @@ void Cube::create_vbo_vao()
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     // Origin + position
     Vertex3DColor vertices[] = {
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, m_color), //0
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, m_color), //1
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, m_color), //2
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, m_color), //3
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, m_color), //4
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, m_color), //5
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, m_color), //6
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, m_color) //7
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //0 0 front
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(1.f, 0.f, 0.f)), //0 1 right
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //0 2 up
+
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //1 3 front
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //1 4 up
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //1 5 left
+                    
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //2 6 front
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //2 7 left
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(0.f, -1.f, 0.f)), //2 8 down
+
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //3 9 front
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //3 10 right
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //3 11 down
+
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //4 12 back
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //4 13 right
+                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //4 14 down
+                    
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //5 15 up
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //5 16 back
+                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //5 17 right
+                    
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //6 18 up 
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 0.f, -1.f)), //6 19 back
+                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //6 20 left
+                    
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //7 21 left
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 0.f, -1.f)), //7 22 back
+                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(0.f, -1.f, 0.f))  //7 23 down
                           };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -29,18 +52,18 @@ void Cube::create_vbo_vao()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
 
     // Create indexes : 8 vertices, 6 faces
-    uint32_t indexes[36] = {1, 2, 3, //top face 
-                            1, 3, 0,
-                            4, 5, 7, //bottom face
-                            5, 7, 6,
-                            0, 3, 4, //left face
-                            3, 4, 7,
-                            1, 2, 5, //right face
-                            2, 5, 6,
-                            3, 2, 7, //front face
-                            2, 7, 6,
-                            0, 1, 4, //back  face
-                            1, 4, 5};
+    uint32_t indexes[36] = {3, 6, 9, //front face 
+                            3, 9, 0,
+                            12, 16, 22, //back face
+                            16, 22, 19,
+                            5, 7, 21, //left face
+                            5, 20, 21,
+                            1, 10, 13, //right face
+                            1, 13, 17,
+                            8, 11, 14, //down face
+                            8, 14, 23,
+                            2, 4, 15, //up  face
+                            4, 15, 18};
 
     // Fill IBO with indexes
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, 36*sizeof(uint32_t), indexes, GL_STATIC_DRAW);
@@ -55,7 +78,7 @@ void Cube::create_vbo_vao()
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
     
     const GLuint VERTEX_ATTR_POSITION = 0;
-    const GLuint VERTEX_ATTR_COLOR = 1;
+    const GLuint VERTEX_ATTR_NORMAL = 1;
 
     // Bind VBO again
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
@@ -63,8 +86,8 @@ void Cube::create_vbo_vao()
     // Where to find vertices and how to read data
     glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_position));
     glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-    glVertexAttribPointer(VERTEX_ATTR_COLOR, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_color));
-    glEnableVertexAttribArray(VERTEX_ATTR_COLOR);
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_normal));
+    glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
     
     // Unbind VBO and VAO
     glBindBuffer(GL_ARRAY_BUFFER, 0);

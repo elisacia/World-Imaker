@@ -17,10 +17,10 @@ class Vertex3DColor
 {    
  public:
     glm::vec3 m_position;
-    glm::vec3 m_color;
+    glm::vec3 m_normal;
     Vertex3DColor();
-    Vertex3DColor(glm::vec3 position, glm::vec3 color)
-        :m_position(position), m_color(color) {}
+    Vertex3DColor(glm::vec3 position,glm::vec3 normal )
+        :m_position(position), m_normal(normal) {}
 };
 
 class Cube
@@ -51,6 +51,7 @@ class Cube
     inline  int getType()const {return m_type;} ;
     inline void setType(int type)  {m_type=type;};
     inline glm::vec3 getPosition() const {return m_position;} ;
+    inline void setPosition(glm::vec3 position) {m_position=position;};
 };
 
     void setGround(std::vector <Cube> &list_cubes, const int volume);

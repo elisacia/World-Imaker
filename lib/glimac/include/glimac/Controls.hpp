@@ -7,6 +7,7 @@
 #include <glimac/FreeFlyCamera.hpp>
 #include <glimac/Cube.hpp>
 #include <glimac/Cursor.hpp>
+#include <glimac/File.hpp>
 #include <glimac/Rbf.hpp>
 #include <iostream>
 #include <SDL2/SDL.h>
@@ -24,6 +25,8 @@ void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, 
 void paint_cubes(std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon);
 // Radial Basis Functions
 void cleanScene(std::vector <Cube> &list_cubes, const int volume);
+// Saving scene
+void save_control(const FilePath &applicationPath,std::string filename,std::vector <Cube> &list_cubes,const int action);
 
 
 }

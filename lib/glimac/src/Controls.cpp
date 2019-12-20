@@ -162,6 +162,11 @@ void resetFloor(std::vector <Cube> &list_cubes, const int volume)
         }
 }
 
+void save_control(const FilePath &applicationPath,std::string filename,std::vector <Cube> &list_cubes,const int action){
+    if(action== 12) saveFile(applicationPath,filename,list_cubes);
+    if(action== 13) loadFile(applicationPath,filename,list_cubes);
+}
+
 
 
 };

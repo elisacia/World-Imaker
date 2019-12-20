@@ -50,20 +50,21 @@ int main(int argc, char** argv) {
     uLightDir_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightDir" );
     uLightPoint_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightPoint" );
 
-    glm::vec3 LightDir=glm::normalize(glm::vec3(0.f));
-    glm::vec3 LightPoint=glm::normalize(glm::vec3(-1.0f));
+    glm::vec4 LightDir=glm::normalize(glm::vec4(5.f, 5.f,5.f,0.));
 
     // Initialize the cursor 
     Cursor cursor;
     glm::vec3 cursorPos;
 
     std::vector <ControlPoint> list_ctrl;
-    readFile(applicationPath,"Control.txt",list_ctrl);
+    readFileControl(applicationPath,"Control.txt",list_ctrl);
 
     // Initialize a nb_cubes ground height
     
     std::vector <Cube> list_cubes;
     setGround(list_cubes, VOLUME);
+
+
 
     // Create Cubes Buffers + uniform location  
     for(Cube &c: list_cubes)
@@ -105,6 +106,7 @@ int main(int argc, char** argv) {
             move_camera_key_pressed(e, camera); // Camera events
             move_cursor_key_pressed(e, cursor); // Cursor events
             sculpt_cubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Scuplting events
+            save_control(applicationPath,"Scene.txt",list_cubes,actionGui);
             
             if (actionGui==1 || actionGui==10|| actionGui==2 || actionGui==20 || actionGui==3 || actionGui==30) 
             paint_cubes(list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Painting events
@@ -133,15 +135,9 @@ int main(int argc, char** argv) {
             glUniform1i(shader1.uCubeType_location, c.getType());      
             c.render(uMVP_location, uMV_location, uNormal_location, camera);
         }
-
-
-        // glm::vec3 tmpLightDir(glm::mat3(camera.getViewMatrix())*glm::vec3(1.0f,1.0f,1.0f));
-        // glUniform3fv(shader1.uLightDir_location, 1, glm::value_ptr(tmpLightDir));
-        // glm::vec3 tmpLightIntensity(1.0f,1.0f,1.0f);
-        // glUniform3f(shader1.uLightIntensity_location, 1.0f,1.0f, 1.0f);
     
-        glUniform3f(uLightDir_location,LightDir.x,LightDir.y,LightDir.z);
-        glUniform3f(uLightPoint_location,LightPoint.x,LightPoint.y,LightPoint.z);
+        glm::vec4 tmpLightDir(glm::mat3(ViewMatrix)*glm::vec3(LightDir),LightDir.w);
+        glUniform4f(uLightDir_location,tmpLightDir.x,tmpLightDir.y,tmpLightDir.z,tmpLightDir.w);
 
         // Draw Cursor
         shader2.m_program.use();

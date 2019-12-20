@@ -16,7 +16,9 @@
 
 
 namespace glimac {
-	void readFile(const FilePath &applicationPath,std::string filename,std::vector <ControlPoint> &list_ctrl);
+	void readFileControl(const FilePath &applicationPath,std::string filename,std::vector <ControlPoint> &list_ctrl);
+	void saveFile(const FilePath &applicationPath,std::string filename,std::vector <Cube> &list_cube);
+	void loadFile(const FilePath &applicationPath,std::string filename,std::vector <Cube> &list_cube);
 }
 
 #endif

@@ -34,7 +34,7 @@ namespace glimac {
 
 
 
-    float Overlay::drawOverlay(int &action,  glm::vec3 &LightDir) const {
+    float Overlay::drawOverlay(int &action,  glm::vec4 &LightDir) const {
 
         // render your GUI
     ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH-250, 10));
@@ -43,6 +43,11 @@ namespace glimac {
    
 
     static bool check = false;
+
+    static bool mode = false;
+    if (mode) LightDir.w=1.f;
+    else LightDir.w=0.f;
+
     static float brushSize=1.0f;
 
     ImGui::Text("Sculpting ____________________"); 
@@ -76,14 +81,33 @@ namespace glimac {
     if (ImGui::Button("RESET FLOOR       "))  action=11;
     if (ImGui::Button("CLEAN ALL         "))  action=4;
     
+    if (LightDir.w<0.5f)
+    {
+    ImGui::Text("Light Direction ______________");
+    ImGui::SliderFloat("x", (float*)&LightDir.x, -VOLUME, 0);
+    ImGui::SliderFloat("y", (float*)&LightDir.y, -VOLUME, 0);
+    ImGui::SliderFloat("z", (float*)&LightDir.z, -VOLUME, 0);
+    }
+
+    if (LightDir.w>0.5f)
+    {
     ImGui::Text("Light Position _______________");
+
     ImGui::SliderFloat("x", (float*)&LightDir.x, -VOLUME, VOLUME);
     ImGui::SliderFloat("y", (float*)&LightDir.y, -VOLUME, VOLUME);
     ImGui::SliderFloat("z", (float*)&LightDir.z, -VOLUME, VOLUME);
+    }
+
+    ImGui::Checkbox("Night Mode", &mode);
+
 
     ImGui::Text("Brush ________________________");
     ImGui::SliderFloat("Brush size", &brushSize, 1.0f, 10.0f);
     ImGui::Checkbox("Large selection", &check);
+
+    ImGui::Text("Save _________________________");
+    if (ImGui::Button("SAVE SCENE"))  action=12;
+    if (ImGui::Button("LOAD SCENE"))  action=13;
 
     ImGui::End();
 
