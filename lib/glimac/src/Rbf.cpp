@@ -64,7 +64,6 @@ namespace glimac {
         value+= getRBF(type, c.getPosition(), list_controls[i].m_position, epsilon)*omega[i];
 
       } 
-      std::cout<< value << std::endl;
       if (value >= 0.f )  c.addCube();
       else c.removeCube();
     }  

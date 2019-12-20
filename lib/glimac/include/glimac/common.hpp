@@ -4,7 +4,7 @@
 #include "glm.hpp"
 #include "Program.hpp"
 
-constexpr int VOLUME = 10; 
+constexpr int VOLUME = 20; 
 constexpr float WINDOW_WIDTH = 1000;
 constexpr float WINDOW_HEIGHT = 600; 
 

@@ -150,6 +150,7 @@ void cleanScene(std::vector <Cube> &list_cubes, const int volume)
 {
         for(Cube &c: list_cubes){
             c.removeCube();
+            c.setType(1);
         }
 }
 
@@ -157,6 +158,7 @@ void resetFloor(std::vector <Cube> &list_cubes, const int volume)
 {
         for(Cube &c: list_cubes){
             c.removeCube();
+            c.setType(1);
         }
 }
 

@@ -13,7 +13,7 @@ namespace glimac{
 class Cursor:public Cube {
 
 public:
-      inline Cursor() {m_position = glm::vec3(0,5,VOLUME-1);};
+      inline Cursor() {m_position = glm::vec3(0,3,VOLUME-1);};
       inline glm::vec3 getCursorPos() const {return m_position;} ;
       void updatePosX(float direction);
       void updatePosY(float direction);
