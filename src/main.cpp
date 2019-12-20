@@ -9,7 +9,6 @@
 #include <glimac/FilePath.hpp> 
 #include <glimac/Overlay.hpp>
 #include <glimac/Cube.hpp>
-#include <glimac/Scene.hpp>
 #include <glimac/Cursor.hpp>
 #include <glimac/File.hpp>
 #include <glm/glm.hpp>
@@ -47,7 +46,12 @@ int main(int argc, char** argv) {
     // Uniform Locations
     GLint uMVP_location, uMV_location, uNormal_location,uCubeType_location;
     GLint uLightDir_location;
+    GLint uLightPoint_location;
     uLightDir_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightDir" );
+    uLightPoint_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightPoint" );
+
+    glm::vec3 LightDir=glm::normalize(glm::vec3(0.f));
+    glm::vec3 LightPoint=glm::normalize(glm::vec3(-1.0f));
 
     // Initialize the cursor 
     Cursor cursor;
@@ -89,7 +93,7 @@ int main(int argc, char** argv) {
 
         // Draw Imgui Windows
         overlay.beginFrame(windowManager.m_window);     
-        brushCursor = overlay.drawOverlay(actionGui);
+        brushCursor = overlay.drawOverlay(actionGui,LightDir);
        
        // Event controller
         while(windowManager.pollEvent(e)) {
@@ -131,10 +135,14 @@ int main(int argc, char** argv) {
         }
 
 
-        glm::vec3 tmpLightDir(glm::mat3(camera.getViewMatrix())*glm::vec3(1.0f,1.0f,1.0f));
-        glUniform3fv(shader1.uLightDir_location, 1, glm::value_ptr(tmpLightDir));
+        // glm::vec3 tmpLightDir(glm::mat3(camera.getViewMatrix())*glm::vec3(1.0f,1.0f,1.0f));
+        // glUniform3fv(shader1.uLightDir_location, 1, glm::value_ptr(tmpLightDir));
+        // glm::vec3 tmpLightIntensity(1.0f,1.0f,1.0f);
+        // glUniform3f(shader1.uLightIntensity_location, 1.0f,1.0f, 1.0f);
     
-        
+        glUniform3f(uLightDir_location,LightDir.x,LightDir.y,LightDir.z);
+        glUniform3f(uLightPoint_location,LightPoint.x,LightPoint.y,LightPoint.z);
+
         // Draw Cursor
         shader2.m_program.use();
         cursor.updateVertices();

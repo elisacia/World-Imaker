@@ -22,7 +22,7 @@ namespace glimac
 			~Overlay();
 			void initImgui(SDL_Window* window,SDL_GLContext* glContext) const;
 			void beginFrame(SDL_Window* window) const;
-			float drawOverlay(int &action) const ;
+			float drawOverlay(int &action,  glm::vec3 &LightDir) const ;
     		void endFrame(SDL_Window* window) const;
     		void clean(SDL_Window* window) const;
     		

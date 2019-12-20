@@ -34,7 +34,7 @@ namespace glimac {
 
 
 
-    float Overlay::drawOverlay(int &action) const {
+    float Overlay::drawOverlay(int &action,  glm::vec3 &LightDir) const {
 
         // render your GUI
     ImGui::SetNextWindowPos(ImVec2(WINDOW_WIDTH-250, 10));
@@ -45,43 +45,45 @@ namespace glimac {
     static bool check = false;
     static float brushSize=1.0f;
 
-
+    ImGui::Text("Sculpting ____________________"); 
     if (ImGui::Button("REMOVE CUBE       ")){
         if (check==true) action=50; 
         else action=5;
     }
-
     if (ImGui::Button("ADD CUBE          ")){
         if (check==true) action=60; 
         else action=6;
     }
-
     if (ImGui::Button("EXTRUDE COLUMN    "))  action=7;
-
     if (ImGui::Button("DIG COLUMN        "))  action=8;
 
+    ImGui::Text("Painting _____________________"); 
     if (ImGui::Button("PAINT RED CUBE    ")){
         if (check==true) action=10; 
         else action=1;
     }  
-
     if (ImGui::Button("PAINT BLUE CUBE   ")){
         if (check==true) action=20; 
         else action=2;
     }  
-
     if (ImGui::Button("PAINT YELLOW CUBE ")){
         if (check==true) action=30; 
         else action=3;
     }  
 
+    ImGui::Text("Generating ___________________"); 
     if (ImGui::Button("SCENE GENERATOR   "))  action=9;
     if (ImGui::Button("RESET FLOOR       "))  action=11;
     if (ImGui::Button("CLEAN ALL         "))  action=4;
+    
+    ImGui::Text("Light Position _______________");
+    ImGui::SliderFloat("x", (float*)&LightDir.x, -VOLUME, VOLUME);
+    ImGui::SliderFloat("y", (float*)&LightDir.y, -VOLUME, VOLUME);
+    ImGui::SliderFloat("z", (float*)&LightDir.z, -VOLUME, VOLUME);
 
-    ImGui::Checkbox("Large selection", &check);
-
+    ImGui::Text("Brush ________________________");
     ImGui::SliderFloat("Brush size", &brushSize, 1.0f, 10.0f);
+    ImGui::Checkbox("Large selection", &check);
 
     ImGui::End();
 
