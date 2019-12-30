@@ -2,44 +2,44 @@
 
 namespace glimac {
 
-void Cube::create_vbo_vao()
+void Cube::createBuffer()
 {
     glGenBuffers(1, &m_vbo);
     // Bind buffer vbo to a target
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
     // Origin + position
-    Vertex3DColor vertices[] = {
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //0 0 front
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(1.f, 0.f, 0.f)), //0 1 right
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //0 2 up
+    Vertex3D vertices[] = {
+                    Vertex3D(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //0 0 front
+                    Vertex3D(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(1.f, 0.f, 0.f)), //0 1 right
+                    Vertex3D(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //0 2 up
 
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //1 3 front
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //1 4 up
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //1 5 left
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //1 3 front
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //1 4 up
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //1 5 left
                     
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //2 6 front
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //2 7 left
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(0.f, -1.f, 0.f)), //2 8 down
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(0.f, 0.f, 1.f)), //2 6 front
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //2 7 left
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position,  glm::vec3(0.f, -1.f, 0.f)), //2 8 down
 
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //3 9 front
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //3 10 right
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //3 11 down
+                    Vertex3D(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //3 9 front
+                    Vertex3D(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //3 10 right
+                    Vertex3D(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //3 11 down
 
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //4 12 back
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //4 13 right
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //4 14 down
+                    Vertex3D(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //4 12 back
+                    Vertex3D(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //4 13 right
+                    Vertex3D(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //4 14 down
                     
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //5 15 up
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //5 16 back
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //5 17 right
+                    Vertex3D(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //5 15 up
+                    Vertex3D(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //5 16 back
+                    Vertex3D(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //5 17 right
                     
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //6 18 up 
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 0.f, -1.f)), //6 19 back
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //6 20 left
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 1.f, 0.f)), //6 18 up 
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 0.f, -1.f)), //6 19 back
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //6 20 left
                     
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //7 21 left
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 0.f, -1.f)), //7 22 back
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(0.f, -1.f, 0.f))  //7 23 down
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(-1.f, 0.f, 0.f)), //7 21 left
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(0.f, 0.f, -1.f)), //7 22 back
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position,  glm::vec3(0.f, -1.f, 0.f))  //7 23 down
                           };
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -84,9 +84,9 @@ void Cube::create_vbo_vao()
     glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
     // Where to find vertices and how to read data
-    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_position));
+    glVertexAttribPointer(VERTEX_ATTR_POSITION, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)offsetof(Vertex3D, m_position));
     glEnableVertexAttribArray(VERTEX_ATTR_POSITION);
-    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3DColor), (void*)offsetof(Vertex3DColor, m_normal));
+    glVertexAttribPointer(VERTEX_ATTR_NORMAL, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)offsetof(Vertex3D, m_normal));
     glEnableVertexAttribArray(VERTEX_ATTR_NORMAL);
     
     // Unbind VBO and VAO
@@ -96,7 +96,7 @@ void Cube::create_vbo_vao()
 
 
 
-void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, GLint &uCubeType_location,const ShaderProgram &shader1)
+void Cube::createUniformLocation(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, GLint &uCubeType_location,const ShaderProgram &shader1)
 {
     uMVP_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVPMatrix" );
     uMV_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVMatrix" );
@@ -106,7 +106,7 @@ void Cube::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_loc
 
 
 
-void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, const FreeFlyCamera &camera) const
+void Cube::renderCube(GLint uMVP_location, GLint uMV_location, GLint uNormal_location, const FreeFlyCamera &camera) const
 {
     if (m_visible)
     {       
@@ -126,7 +126,7 @@ void Cube::render(GLint uMVP_location, GLint uMV_location, GLint uNormal_locatio
     }
 }
 
-void Cube::liberate_resources()
+void Cube::freeRessources()
 {
     glDeleteBuffers(1, &m_vbo);
     glDeleteVertexArrays(1, &m_vao);

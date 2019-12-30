@@ -3,20 +3,10 @@
 #include <iostream>
 #include <cstddef>
 #include <math.h>
-#include <glimac/Controls.hpp>
-#include <glimac/FreeFlyCamera.hpp>
 #include <glimac/SDLWindowManager.hpp> 
-#include <glimac/FilePath.hpp> 
+#include <glimac/Controls.hpp>
 #include <glimac/Overlay.hpp>
 #include <glimac/Cube.hpp>
-#include <glimac/Cursor.hpp>
-#include <glimac/File.hpp>
-#include <glm/glm.hpp>
-#include <glimac/Rbf.hpp>
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_opengl3.h>
-#include <imgui/imgui_impl_sdl.h>
-#include <glimac/common.hpp>
 
 using namespace glimac;
 
@@ -37,7 +27,6 @@ int main(int argc, char** argv) {
         return EXIT_FAILURE;
     }
 
-
     // Shaders
     FilePath applicationPath(argv[0]);
     ShaderProgram shader1(applicationPath,"colorcube.fs.glsl");
@@ -50,37 +39,36 @@ int main(int argc, char** argv) {
     uLightDir_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightDir" );
     uLightPoint_location = glGetUniformLocation(shader1.m_program.getGLId(), "uLightPoint" );
 
-    glm::vec4 LightDir=glm::normalize(glm::vec4(5.f, 5.f,5.f,0.));
+    // Initialize the light
+    glm::vec4 LightDir=(glm::vec4(-6.f, -6.f,-2.f,0.));
 
     // Initialize the cursor 
     Cursor cursor;
     glm::vec3 cursorPos;
 
+    // Initialize controls points for RBF
     std::vector <ControlPoint> list_ctrl;
     readFileControl(applicationPath,"Control.txt",list_ctrl);
 
     // Initialize a nb_cubes ground height
-    
     std::vector <Cube> list_cubes;
     setGround(list_cubes, VOLUME);
-
-
 
     // Create Cubes Buffers + uniform location  
     for(Cube &c: list_cubes)
     {
-        c.create_vbo_vao();
-        c.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location,uCubeType_location, shader1);
-
+        c.createBuffer();
+        c.createUniformLocation(uMVP_location, uMV_location, uNormal_location,uCubeType_location, shader1);
     }
 
     // Create Cursor Buffers + uniform location  
-    cursor.create_vbo_vao();
-    cursor.create_uniform_variable_location(uMVP_location, uMV_location, uNormal_location, shader2);
+    cursor.createBuffer();
+    cursor.createUniformLocation(uMVP_location, uMV_location, uNormal_location, shader2);
 
     // Load camera
     FreeFlyCamera camera;
 
+    // Initialization for Imgui
     float brushCursor;
 
     // Application loop
@@ -90,7 +78,7 @@ int main(int argc, char** argv) {
         SDL_Event e;
 
         //Background color
-        //glClearColor(1.0,1.0,1.0,1.0);
+        glClearColor(0.1f,0.1f,0.1f,1.0);
 
         // Draw Imgui Windows
         overlay.beginFrame(windowManager.m_window);     
@@ -103,23 +91,22 @@ int main(int argc, char** argv) {
             }
             cursorPos = cursor.getCursorPos();
 
-            move_camera_key_pressed(e, camera); // Camera events
-            move_cursor_key_pressed(e, cursor); // Cursor events
-            sculpt_cubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Scuplting events
-            save_control(applicationPath,"Scene.txt",list_cubes,actionGui);
+            moveCamera(e, camera); // Camera events
+            moveCursor(e, cursor); // Cursor events
+            sculptCubes(e,list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Scuplting events
+            saveControl(applicationPath,"Scene.txt",list_cubes,actionGui);
             
             if (actionGui==1 || actionGui==10|| actionGui==2 || actionGui==20 || actionGui==3 || actionGui==30) 
-            paint_cubes(list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Painting events
+            paintCubes(list_cubes,cursor,cursorPos,VOLUME,actionGui,brushCursor); // Painting events
             
             if (actionGui==4)cleanScene(list_cubes, VOLUME);
 
-            if (actionGui==9)applyRbf(list_cubes, list_ctrl, FunctionType::Gaussian);
+            if (actionGui==9)applyRBF(list_cubes, list_ctrl, FunctionType::Gaussian);
 
             if (actionGui==11)resetGround(list_cubes, VOLUME);
 
             actionGui=0;
-
-             } 
+            } 
             
         /*********************************
          * HERE SHOULD COME THE RENDERING CODE
@@ -133,7 +120,7 @@ int main(int argc, char** argv) {
         for(Cube &c: list_cubes)
         {
             glUniform1i(shader1.uCubeType_location, c.getType());      
-            c.render(uMVP_location, uMV_location, uNormal_location, camera);
+            c.renderCube(uMVP_location, uMV_location, uNormal_location, camera);
         }
     
         glm::vec4 tmpLightDir(glm::mat3(ViewMatrix)*glm::vec3(LightDir),LightDir.w);
@@ -151,7 +138,7 @@ int main(int argc, char** argv) {
     // Liberate allocations
     for(Cube &c: list_cubes)
     {
-        c.liberate_resources();
+        c.freeRessources();
     }
     
     return EXIT_SUCCESS;

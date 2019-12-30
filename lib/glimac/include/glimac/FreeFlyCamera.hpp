@@ -1,4 +1,8 @@
+#ifndef FILE_HPP 
+#define FILE_HPP
+
 #pragma once
+
 #include <glimac/common.hpp>
 
 class FreeFlyCamera{
@@ -24,3 +28,5 @@ private:
     glm::vec3 m_UpVector;
 
 };
+
+#endif

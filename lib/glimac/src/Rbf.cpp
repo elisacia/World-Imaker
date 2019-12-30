@@ -26,7 +26,7 @@ namespace glimac {
   }
 
 
-  Eigen::VectorXf mathRbf(std::vector <ControlPoint> &list_controls, FunctionType type,  const float epsilon){
+  Eigen::VectorXf calculRBF(std::vector <ControlPoint> &list_controls, FunctionType type,  const float epsilon){
     size_t size=list_controls.size();
 
     //Definition Matrix A
@@ -39,6 +39,7 @@ namespace glimac {
     Eigen::MatrixXf A_t=A.transpose();
     A=A+A_t;
     A=A+Eigen::MatrixXf::Identity(size,size)*getRBF(type, list_controls[0].m_position,list_controls[0].m_position, epsilon);
+    
     //Definition Vector B
     Eigen::VectorXf B(size);
     for (int i=0; i<size; ++i){
@@ -51,12 +52,11 @@ namespace glimac {
     return vec_omega;
   }
 
-
   
-  void applyRbf(std::vector <Cube> &list_cubes, std::vector <ControlPoint> &list_controls, FunctionType type){
+  void applyRBF(std::vector <Cube> &list_cubes, std::vector <ControlPoint> &list_controls, FunctionType type){
     float epsilon=1.f;
     float value;
-    Eigen::VectorXf omega=mathRbf(list_controls, type, epsilon);
+    Eigen::VectorXf omega=calculRBF(list_controls, type, epsilon);
 
     for(Cube &c: list_cubes){
       value=0;

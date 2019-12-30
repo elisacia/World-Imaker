@@ -16,7 +16,6 @@ struct ShapeVertex {
     glm::vec2 texCoords;
 };
 
-
 struct ShaderProgram {
 
     Program m_program;

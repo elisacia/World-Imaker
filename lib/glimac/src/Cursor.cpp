@@ -58,7 +58,7 @@ void Cursor::renderCursor(GLint uMVP_location, GLint uMV_location, GLint uNormal
   glBindVertexArray(0);
 }
 
-void Cursor::create_uniform_variable_location(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, const ShaderProgram &shader1) 
+void Cursor::createUniformLocation(GLint &uMVP_location, GLint &uMV_location, GLint &uNormal_location, const ShaderProgram &shader1) 
 {
     uMVP_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVPMatrix" );
     uMV_location = glGetUniformLocation(shader1.m_program.getGLId(), "uMVMatrix" );
@@ -69,39 +69,39 @@ void Cursor::updateVertices()
 {
   glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
-  Vertex3DColor vertices[] = {
+  Vertex3D vertices[] = {
                   
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //0 0 front
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //0 1 right
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //0 2 up
+                    Vertex3D(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //0 0 front
+                    Vertex3D(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(1.f, 0.f, 0.f)), //0 1 right
+                    Vertex3D(glm::vec3(0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //0 2 up
 
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //1 3 front
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //1 4 up
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //1 5 left
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //1 3 front
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //1 4 up
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, 0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //1 5 left
                     
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //2 6 front
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //2 7 left
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //2 8 down
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, 0.f, 1.f)), //2 6 front
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //2 7 left
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, 0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f)), //2 8 down
 
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position,glm::vec3(0.f, 0.f, 1.f)), //3 9 front
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position,glm::vec3(1.f, 0.f, 0.f)), //3 10 right
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position,glm::vec3(0.f, -1.f, 0.f)), //3 11 down
+                    Vertex3D(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position,glm::vec3(0.f, 0.f, 1.f)), //3 9 front
+                    Vertex3D(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position,glm::vec3(1.f, 0.f, 0.f)), //3 10 right
+                    Vertex3D(glm::vec3(0.5f, -0.5f, 0.5f)+ m_position,glm::vec3(0.f, -1.f, 0.f)), //3 11 down
 
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position,glm::vec3(0.f, 0.f, -1.f)), //4 12 back
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position,glm::vec3(1.f, 0.f, 0.f)), //4 13 right
-                    Vertex3DColor(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position,glm::vec3(0.f, -1.f, 0.f)), //4 14 down
+                    Vertex3D(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position,glm::vec3(0.f, 0.f, -1.f)), //4 12 back
+                    Vertex3D(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position,glm::vec3(1.f, 0.f, 0.f)), //4 13 right
+                    Vertex3D(glm::vec3(0.5f, -0.5f, -0.5f)+ m_position,glm::vec3(0.f, -1.f, 0.f)), //4 14 down
                     
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position,glm::vec3(0.f, 1.f, 0.f)), //5 15 up
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position,glm::vec3(0.f, 0.f, -1.f)), //5 16 back
-                    Vertex3DColor(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position,glm::vec3(1.f, 0.f, 0.f)), //5 17 right
+                    Vertex3D(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position,glm::vec3(0.f, 1.f, 0.f)), //5 15 up
+                    Vertex3D(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position,glm::vec3(0.f, 0.f, -1.f)), //5 16 back
+                    Vertex3D(glm::vec3(0.5f, 0.5f, -0.5f)+ m_position,glm::vec3(1.f, 0.f, 0.f)), //5 17 right
                     
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //6 18 up 
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //6 19 back
-                    Vertex3DColor(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //6 20 left
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 1.f, 0.f)), //6 18 up 
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //6 19 back
+                    Vertex3D(glm::vec3(-0.5f, 0.5f, -0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //6 20 left
                     
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //7 21 left
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //7 22 back
-                    Vertex3DColor(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f))  //7 23 down
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(-1.f, 0.f, 0.f)), //7 21 left
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, 0.f, -1.f)), //7 22 back
+                    Vertex3D(glm::vec3(-0.5f, -0.5f, -0.5f)+ m_position, glm::vec3(0.f, -1.f, 0.f))  //7 23 down
                           };
                 
 

@@ -3,16 +3,12 @@
 
 #pragma once
 
-#include <glm/glm.hpp>
 #include <vector>
 #include <glimac/Cube.hpp>
-#include <glimac/common.hpp>
 #include <math.h>
 #include <algorithm>
 #include <numeric>
 #include <Eigen/Dense>
-
-
 
 namespace glimac{
 
@@ -34,8 +30,8 @@ public:
 
 
     float getRBF(FunctionType type, const glm::vec3 vecA, const glm::vec3 vecB, const float epsilon);
-    Eigen::VectorXf mathRbf(std::vector <ControlPoint> &list_controls, FunctionType type,  const float epsilon);
-    void applyRbf(std::vector <Cube> &list_cubes,  std::vector <ControlPoint> &list_controls, FunctionType type);
+    Eigen::VectorXf caclulRBF(std::vector <ControlPoint> &list_controls, FunctionType type,  const float epsilon);
+    void applyRBF(std::vector <Cube> &list_cubes,  std::vector <ControlPoint> &list_controls, FunctionType type);
 
 }
 

@@ -1,8 +1,5 @@
 #include "glimac/Overlay.hpp"
 
-
-
-
 #include <iostream>
 
 namespace glimac {
@@ -29,11 +26,6 @@ namespace glimac {
         ImGui::NewFrame();
     }
 
-
-
-
-
-
     float Overlay::drawOverlay(int &action,  glm::vec4 &LightDir) const {
 
         // render your GUI
@@ -43,9 +35,14 @@ namespace glimac {
    
 
     static bool check = false;
-
+    static int saved = 0;
     static bool mode = false;
-    if (mode) LightDir.w=1.f;
+
+    if (mode) {
+        LightDir.w=1.f;
+        glClearColor(0.,0.,0.,1.0);
+    } 
+
     else LightDir.w=0.f;
 
     static float brushSize=1.0f;
@@ -78,37 +75,64 @@ namespace glimac {
 
     ImGui::Text("Generating ___________________"); 
     if (ImGui::Button("SCENE GENERATOR   "))  action=9;
-    if (ImGui::Button("RESET FLOOR       "))  action=11;
     if (ImGui::Button("CLEAN ALL         "))  action=4;
+    if (ImGui::Button("RESET FLOOR       "))  action=11;
+    
     
     if (LightDir.w<0.5f)
     {
     ImGui::Text("Light Direction ______________");
-    ImGui::SliderFloat("x", (float*)&LightDir.x, -VOLUME, 0);
-    ImGui::SliderFloat("y", (float*)&LightDir.y, -VOLUME, 0);
-    ImGui::SliderFloat("z", (float*)&LightDir.z, -VOLUME, 0);
+    ImGui::SliderFloat("x", (float*)&LightDir.x, -VOLUME/2, 0);
+    ImGui::SliderFloat("y", (float*)&LightDir.y, -VOLUME/2, 0);
+    ImGui::SliderFloat("z", (float*)&LightDir.z, -VOLUME/2, 0);
     }
 
     if (LightDir.w>0.5f)
     {
     ImGui::Text("Light Position _______________");
 
-    ImGui::SliderFloat("x", (float*)&LightDir.x, -VOLUME, VOLUME);
-    ImGui::SliderFloat("y", (float*)&LightDir.y, -VOLUME, VOLUME);
+    ImGui::SliderFloat("x", (float*)&LightDir.x, 0, VOLUME);
+    ImGui::SliderFloat("y", (float*)&LightDir.y, 0, VOLUME);
     ImGui::SliderFloat("z", (float*)&LightDir.z, -VOLUME, VOLUME);
     }
 
     ImGui::Checkbox("Night Mode", &mode);
 
-
+    
+    if (check)
+    {
     ImGui::Text("Brush ________________________");
     ImGui::SliderFloat("Brush size", &brushSize, 1.0f, 10.0f);
     ImGui::Checkbox("Large selection", &check);
+    }
+    else
+    {
+    ImGui::Text("Brush ________________________");
+    ImGui::Checkbox("Large selection", &check);
+    }
+
+
 
     ImGui::Text("Save _________________________");
-    if (ImGui::Button("SAVE SCENE"))  action=12;
-    if (ImGui::Button("LOAD SCENE"))  action=13;
+    if (ImGui::Button("SAVE SCENE")) {
+        action=12;
+        saved++;
+    } 
 
+    if (saved == 1)
+    {
+        ImGui::SameLine();
+        ImGui::Text("Saved!");
+    }
+
+    if (saved > 1)
+    {
+        ImGui::SameLine();
+        ImGui::Text("Resaved!");
+    }
+
+    if (ImGui::Button("LOAD SCENE"))  action=13;
+    
     ImGui::End();
 
     return 1.0f/brushSize;
@@ -120,6 +144,5 @@ namespace glimac {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
     }
-
     
 }

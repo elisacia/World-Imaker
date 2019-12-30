@@ -2,7 +2,7 @@
 
 namespace glimac {
  
-const void move_camera_key_pressed(const SDL_Event &e, FreeFlyCamera &camera) 
+const void moveCamera(const SDL_Event &e, FreeFlyCamera &camera) 
 {
     switch(e.key.keysym.sym)
     {
@@ -40,7 +40,7 @@ const void move_camera_key_pressed(const SDL_Event &e, FreeFlyCamera &camera)
     
 }
 
-const void move_cursor_key_pressed(const SDL_Event &e, Cursor &cursor) 
+const void moveCursor(const SDL_Event &e, Cursor &cursor) 
 {
 
 if(e.type==SDL_KEYDOWN){
@@ -78,7 +78,7 @@ switch(e.key.keysym.scancode)
 
 }
 
-void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon)
+void sculptCubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon)
 {
     float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
     float indexCol= cursorPos.z*volume+cursorPos.x;
@@ -130,7 +130,7 @@ void sculpt_cubes(SDL_Event &e, std::vector <Cube> &list_cubes, Cursor &cursor, 
 }
 
 
-void paint_cubes(std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon)
+void paintCubes(std::vector <Cube> &list_cubes, Cursor &cursor, glm::vec3 &cursorPos, const int volume, const int action, const float epsilon)
 {
     float index= cursorPos.z*volume+cursorPos.x+cursorPos.y*volume*volume;
 
@@ -154,15 +154,7 @@ void cleanScene(std::vector <Cube> &list_cubes, const int volume)
         }
 }
 
-void resetFloor(std::vector <Cube> &list_cubes, const int volume)
-{
-        for(Cube &c: list_cubes){
-            c.removeCube();
-            c.setType(1);
-        }
-}
-
-void save_control(const FilePath &applicationPath,std::string filename,std::vector <Cube> &list_cubes,const int action){
+void saveControl(const FilePath &applicationPath,std::string filename,std::vector <Cube> &list_cubes,const int action){
     if(action== 12) saveFile(applicationPath,filename,list_cubes);
     if(action== 13) loadFile(applicationPath,filename,list_cubes);
 }
