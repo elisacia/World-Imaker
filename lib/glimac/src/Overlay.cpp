@@ -102,7 +102,7 @@ namespace glimac {
     if (check)
     {
     ImGui::Text("Brush ________________________");
-    ImGui::SliderFloat("Brush size", &brushSize, 1.0f, 10.0f);
+    ImGui::SliderFloat("Size", &brushSize, 1.0f, 10.0f);
     ImGui::Checkbox("Large selection", &check);
     }
     else
@@ -110,8 +110,6 @@ namespace glimac {
     ImGui::Text("Brush ________________________");
     ImGui::Checkbox("Large selection", &check);
     }
-
-
 
     ImGui::Text("Save _________________________");
     if (ImGui::Button("SAVE SCENE")) {
@@ -131,7 +129,14 @@ namespace glimac {
         ImGui::Text("Resaved!");
     }
 
+    ImGui::SameLine();
     if (ImGui::Button("LOAD SCENE"))  action=13;
+
+    ImGui::Text("Controls _____________________");
+
+    ImGui::Text("TRANSLATE CAMERA : A, Z, E, Q, S, D");
+    ImGui::Text("ROTATE CAMERA : I, J, K, L");
+    ImGui::Text("MOVE CURSOR : B, N, arrow keys");
     
     ImGui::End();
 

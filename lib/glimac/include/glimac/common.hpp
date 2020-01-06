@@ -10,12 +10,6 @@ constexpr float WINDOW_HEIGHT = 600;
 
 namespace glimac {
 
-struct ShapeVertex {
-    glm::vec3 position;
-    glm::vec3 normal;
-    glm::vec2 texCoords;
-};
-
 struct ShaderProgram {
 
     Program m_program;

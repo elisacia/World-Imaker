@@ -148,7 +148,7 @@ void setGround(std::vector <Cube> &list_cubes, const int volume)
         {
             for (int i = 0; i < VOLUME; ++i)
             {
-                list_cubes.push_back( Cube(glm::vec3(i,k,j), glm::vec3(0.2 + i/5.0, i/5.0, 0.2 + i*0.1),visibility) );
+                list_cubes.push_back( Cube(glm::vec3(i,k,j),visibility) );
             }
 
         }

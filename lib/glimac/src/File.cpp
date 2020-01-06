@@ -51,7 +51,7 @@ void saveFile(const FilePath &applicationPath,std::string filename,std::vector <
 
         fichier.close();  
     }
-    else std::cerr << "Impossible d'enregistrer la scène !" << std::endl;
+    else std::cerr << "Impossible d'écrire le fichier de sauvegarde !" << std::endl;
 }
 
     
@@ -107,7 +107,7 @@ void loadFile(const FilePath &applicationPath,std::string filename,std::vector <
         fichier.close();  
     }
 
-    else std::cerr << "Impossible de charger la scène !" << std::endl; 
+    else std::cerr << "Impossible de charger le fichier de sauvegarde !" << std::endl; 
 
 }
    
